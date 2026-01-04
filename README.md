@@ -1,6 +1,14 @@
 # video-mcq
 
-Interactive video-based MCQ / checkbox / poll / free-response quizzes with a Flask + SQLite backend and a static frontend.
+![License](https://img.shields.io/github/license/dedx/video-mcq)
+![Repo Size](https://img.shields.io/github/repo-size/dedx/video-mcq)
+![Last Commit](https://img.shields.io/github/last-commit/dedx/video-mcq)
+
+Interactive video-based **MCQ / checkbox / poll / free-response** quizzes with a Flask + SQLite backend and a static frontend.
+
+**Quiz content (CSV + JSON exports) lives in a separate repository:**  
+➡️ **video-mcq-quizzes**: https://github.com/dedx/video-mcq-quizzes  
+That repository’s content is licensed under **CC BY-NC 4.0** (see its `LICENSE`).
 
 ---
 
@@ -11,7 +19,7 @@ project/
 ├─ backend/
 │  ├─ app.py                 # Flask backend with SQLite (direct sqlite3, no ORM)
 │  ├─ requirements.txt       # Packages for the virtual environment
-│  └─ .env.example           # Example environment config (copy to .env locally)
+│  └─ .env.example           # Example env config (copy to .env locally)
 ├─ frontend/                 # All files served under /static/*
 │  ├─ index.html             # Multi-video selector page
 │  ├─ index-simple.html      # Single-video player page
@@ -23,13 +31,15 @@ project/
 │  ├─ choices-color.css      # Optional visual states
 │  ├─ choices-color.js       # Optional helpers
 │  └─ favicon.svg            # (or favicon.ico)
-├─ quizzes/                  # Quiz JSON files (one per video)
+├─ quizzes/                  # Quiz JSON files (optional examples only)
 │  └─ sample.json
 └─ mcq-manifest.json         # Optional manifest locking paths
 ```
 
 **Static mapping:** `/static/*` → `frontend/*`  
 **Quiz JSON directory:** `quizzes/`
+
+> Note: The SQLite DB file is created on first run (path controlled by `DB_PATH` / app config). It is intentionally **not** committed.
 
 ---
 
@@ -93,25 +103,17 @@ export PORT=5000
 
 ---
 
-## Frontend element IDs
-
-### index.html
-- `#quizPicker`
-- `#overlay`, `#prompt`, `#choices`
-- `#submit`, `#continue`, `#feedback`
-
-### index-simple.html
-- `#player`
-- same overlay elements
-- `window.QUIZ_ID = 'sample'`
-
-### dashboard.html
-- Attempts table and controls
-- Poll / free-response aggregation panels
-
----
-
 ## Quiz JSON schema (authoring)
+
+Supported item types:
+- `pause`
+- `mcq`
+- `checkbox`
+- `poll`
+- `fib`
+- `fr`
+
+Minimal example:
 
 ```json
 {
@@ -128,35 +130,6 @@ export PORT=5000
 }
 ```
 
-Supported item types:
-- `pause`
-- `mcq`
-- `checkbox`
-- `poll`
-- `fib`
-- `fr`
-
----
-
-## Data model (SQLite)
-
-Attempts table includes:
-- quiz_id
-- viewer
-- points / max_points
-- answers_json
-- created_at
-
-User input is sanitized and stored inertly.
-
----
-
-## Security
-
-- Delete endpoints require `DELETE_KEY`
-- View endpoints require `VIEW_KEY`
-- If keys are unset, actions are disabled
-
 ---
 
 ## Verification cookbook
@@ -171,21 +144,18 @@ curl -X POST http://127.0.0.1:PORT/api/attempt/sample \
 
 ---
 
-## Change policy
+## Contributing
 
-- Do not rename documented paths without updating this README
-- API changes must be additive
-- Frontend element IDs must not be renamed
+See `CONTRIBUTING.md`. If you’re reporting a bug, include:
+- steps to reproduce
+- expected vs actual behavior
+- browser + OS
+- relevant console/network output (redacting secrets)
 
 ---
 
-## CSV → JSON conversion
+## License
 
-The `csv_to_quizzes.py` tool converts CSV quizzes into per-quiz JSON files.
+This repository contains the **software** and is licensed per `LICENSE`.
 
-Supported item types:
-`mcq`, `checkbox`, `fib`, `pause`, `poll`, `fr`
-
-```bash
-python3 csv_to_quizzes.py input.csv --out quizzes/
-```
+Quiz **content** is in the separate repo: https://github.com/dedx/video-mcq-quizzes (licensed **CC BY-NC 4.0**).
