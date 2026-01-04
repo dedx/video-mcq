@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Instructor Dashboard — Interactive Videos</title>
+  <style>
+    /* mask text inputs like a password field, without triggering password managers */
+    .text-secure { -webkit-text-security: disc; text-security: disc; }
+    :root{--bg:#0b1020;--fg:#e9eef8;--muted:#94a3b8;--card:#121a33;--line:#223057;--accent:#5b8cff;--bad:#ef4444}
+    *{box-sizing:border-box} html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:system-ui,Segoe UI,Roboto,sans-serif}
+    header,main{max-width:1200px;margin:0 auto;padding:16px}
+    header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+    h1{font-size:1.25rem;margin:0}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    input,select{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:#0f1630;color:#fff}
+    button{border:0;border-radius:10px;padding:9px 14px;background:var(--accent);color:#fff;font-weight:600;cursor:pointer}
+    button.secondary{background:transparent;border:1px solid var(--accent);color:var(--accent)}
+    button.danger{background:var(--bad)}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}
+    table{width:100%;border-collapse:collapse}
+    th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left;font-size:0.95rem}
+    th{color:#cbd5e1}
+    .muted{color:#94a3b8}
+    .flex{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .right{margin-left:auto}
+    .pill{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid var(--line);font-size:0.8rem;color:#cbd5e1}
+    .danger-zone{border:1px dashed var(--line);border-radius:12px;padding:12px;background:#0f1630}
+    .nowrap{white-space:nowrap}
+    .narrow{max-width:220px}
+    label.inline{display:flex;align-items:center;gap:6px}
+  </style>
+</head>
+<body>
+<header>
+  <h1>Instructor Dashboard</h1>
+  <div class="row">
+    <input id="viewKey" class="narrow text-secure" placeholder="View key" type="text" 
+	   name="view_key_dashboard"
+       autocomplete="off"
+       autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="text"
+       data-1p-ignore
+       data-lpignore="true"
+       data-bwignore="true"
+       data-form-type="other">
+    <button id="saveViewKey" class="secondary">Save View Key</button>
+    <span id="keyStatus" class="muted"></span>
+
+  </div>
+</header>
+
+<main>
+  <!-- Filters & export -->
+  <div class="card">
+    <div class="flex">
+      <div class="row">
+        <label class="muted">Quiz&nbsp;</label>
+        <select id="quizFilter"></select>
+      </div>
+      <div class="row">
+        <input id="viewerFilter" placeholder="Filter by viewer (optional)" class="narrow">
+      </div>
+
+      <div class="row">
+        <label class="muted">Aggregate&nbsp;</label>
+        <select id="aggMode" title="How summaries collapse multiple attempts per viewer×quiz">
+          <option value="weighted" selected>Weighted (all attempts)</option>
+          <option value="latest">Latest per viewer×quiz</option>
+          <option value="best">Best per viewer×quiz</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label class="inline">
+          <input type="checkbox" id="applyAgg" checked>
+          <span class="muted">Apply aggregation to attempts list and CSV</span>
+        </label>
+      </div>
+
+      <button id="refresh">Refresh</button>
+
+      <!-- Export buttons -->
+      <button id="exportRows" class="secondary">Export Rows</button>
+      <button id="exportByViewer" class="secondary">Export by Viewer</button>
+      <button id="exportAnswers" class="secondary">Export Answers (long)</button>
+
+      <span id="status" class="muted right"></span>
+    </div>
+  </div>
+
+  <!-- Attempts table (no per-question preview) -->
+  <div class="card">
+    <div class="flex">
+      <strong>Attempts</strong>
+      <span id="count" class="pill">0</span>
+      <span id="listStatus" class="muted"></span>
+    </div>
+    <div style="overflow:auto">
+      <table id="attemptsTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Quiz</th>
+            <th>Viewer</th>
+            <th>Score</th>
+	    <th>Watched %</th>
+            <th>Created</th>
+            <th class="nowrap">Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+ <hr>
+<section id="respPanel">
+  <h2>Poll & Free-Response</h2>
+  <div class="row" style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+    <label>Quiz:
+      <select id="respQuiz"></select>
+    </label>
+    <label>Show:
+      <select id="respType">
+        <option value="all">All</option>
+        <option value="poll">Polls</option>
+        <option value="fr">Free responses</option>
+      </select>
+    </label>
+    <label>Attempt:
+      <select id="respAttempt">
+        <option value="all">All</option>
+        <option value="latest" selected>Latest per student</option>
+        <option value="best">Best per student</option>
+      </select>
+    </label>
+    <button id="btnLoadResp">Load</button>
+
+    <div style="flex:1"></div>
+
+    <label>Column names:
+      <select id="exportNameMode">
+        <option value="id" selected>Item IDs</option>
+        <option value="prompt">Short prompts</option>
+      </select>
+    </label>
+    <button id="btnExportPollFr">Download CSV</button>
+  </div>
+
+  <div id="pollAgg" style="margin-top:12px"></div>
+
+  <table id="respTable" style="margin-top:12px; width:100%; border-collapse:collapse">
+    <thead>
+      <tr>
+        <th style="text-align:left">When</th>
+        <th style="text-align:left">Viewer</th>
+        <th style="text-align:left">Quiz</th>
+        <th style="text-align:left">Item</th>
+        <th style="text-align:left">Type</th>
+        <th style="text-align:left">Value</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+  <!-- Delete by viewer -->
+  <div class="card">
+    <div class="flex">
+      <strong>Delete by viewer</strong>
+      <div class="row">
+        <input id="viewerDelete" placeholder="viewer to delete (exact, e.g., jsmith)" class="narrow">
+        <select id="quizDeleteScope">
+          <option value="">All quizzes</option>
+        </select>
+      </div>
+      <button id="deleteByViewer" class="danger">Delete by viewer</button>
+      <span class="muted">Requires admin key & confirmation.</span>
+    </div>
+  </div>
+
+<!-- Danger zone at the VERY bottom -->
+  <div class="card" style="margin-top:24px">
+    <div class="danger-zone">
+      <div class="flex">
+        <strong>Danger zone:</strong>
+        <button id="deleteAll" class="danger">Delete ALL attempts</button>
+        <span class="muted">Requires admin key & explicit confirmation.</span>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <section id="deleteKeyPanel" class="card" style="margin-top:16px">
+    <h3> Delete key (admin)</h3>
+    <div class="admin-row" style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+      <input id="deleteKey" class="narrow text-secure" placeholder="Delete key" type="text" 
+           name="delete_key_dashboard"
+       autocomplete="off"
+       autocapitalize="off" autocorrect="off" spellcheck="false"
+       data-1p-ignore
+       data-lpignore="true"
+       data-bwignore="true"
+       data-form-type="other">
+    <button id="saveDeleteKey" class="secondary">Save Delete Key</button>
+    <span id="deleteKeyStatus" class="muted"></span>
+    </div>
+    <p class="muted" style="margin:8px 0 0">Needed only for deleting attempts. Keep it secret.</p>
+</section>
+</main>
+
+<!-- Cache-busted script -->
+<script src="/static/dashboard.js?v=noshow1"></script>
+</body>
+</html>

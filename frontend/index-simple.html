@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interactive Video MCQ — Single Player</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <style>
+    /* minimal safety styles if styles.css is empty */
+    :root{--bg:#0b1020;--fg:#e9eef8}
+    body{background:var(--bg);color:var(--fg);font-family:system-ui,Segoe UI,Roboto,sans-serif;margin:0}
+    main{max-width:960px;margin:24px auto;padding:0 16px}
+    #player{aspect-ratio:16/9;background:#111;border-radius:16px;overflow:hidden}
+    .overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55)}
+    .hidden{display:none}
+    .card{background:#121a33;border:1px solid #223057;border-radius:16px;padding:18px;max-width:720px;width:92%}
+    .prompt{font-size:1.1rem;margin-bottom:10px}
+    .choices label{display:block;margin:8px 0;padding:10px;border:1px solid #33406a;border-radius:10px}
+    .footer{display:flex;gap:12px;align-items:center;margin-top:10px;opacity:.9}
+    button{border:0;border-radius:10px;padding:10px 14px;background:#5b8cff;color:#fff;font-weight:600;cursor:pointer}
+    .secondary{background:transparent;border:1px solid #5b8cff;color:#5b8cff;margin-left:8px}
+  </style>
+</head>
+<body>
+  <main>
+    <h1 id="title">Interactive Video</h1>
+
+    <!-- The video player gets injected into this div -->
+    <div id="player"></div>
+
+    <!-- Question overlay (must be OUTSIDE the iframe) -->
+    <section id="overlay" class="overlay hidden" aria-live="polite">
+      <div class="card" role="dialog" aria-modal="true">
+        <div id="prompt" class="prompt"></div>
+        <form id="choices" class="choices"></form>
+        <div class="actions">
+          <button id="submit" type="button">Submit</button>
+          <button id="continue" type="button" class="hidden secondary">Continue</button>
+        </div>
+        <div id="feedback" class="feedback" aria-live="polite" style="margin-top:8px"></div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span id="progress"></span>
+      <button id="theater" type="button" class="secondary">Theater</button>
+      <button id="finish" class="hidden" type="button">Finish & Submit</button>
+      <span id="status"></span>
+    </footer>
+  </main>
+
+  <!-- Load the YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+  <!-- IMPORTANT: set QUIZ_ID to match a file in quizzes/*.json -->
+  <script>
+    // Make sure quizzes/sample.json exists.
+    window.QUIZ_ID = 'sample';
+  </script>
+
+  <!-- Your single-player logic -->
+  <script src="/static/player.js"></script>
+  <script src="/static/choices-color.js"></script>
+
+</body>
+</html>

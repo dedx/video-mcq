@@ -1,0 +1,188 @@
+{
+  "id": "pp001",
+  "items": [
+    {
+      "id": "q1",
+      "t": 28,
+      "type": "checkbox",
+      "prompt": "How is our class different from other classes?",
+      "points": 1.0,
+      "choices": [
+        {
+          "id": "a",
+          "text": "We watch videos at home and work in groups together in class."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "feedback": {
+        "a": "Right!"
+      },
+      "pointsPerCorrect": 1.0,
+      "penaltyPerWrong": 0.0,
+      "capAtMax": false
+    },
+    {
+      "id": "q2",
+      "t": 78,
+      "type": "checkbox",
+      "prompt": "How is this method like learning our first language?",
+      "points": 1.0,
+      "choices": [
+        {
+          "id": "a",
+          "text": "We just start doing it and get better by repetition"
+        },
+        {
+          "id": "b",
+          "text": "We drink milk and get burped while we're learning"
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "pointsPerCorrect": 1.0,
+      "penaltyPerWrong": 0.0,
+      "capAtMax": false
+    },
+    {
+      "id": "q3",
+      "t": 121,
+      "type": "checkbox",
+      "prompt": "What point am I making about learning concepts in parallel?",
+      "points": 1.0,
+      "choices": [
+        {
+          "id": "a",
+          "text": "Traditionally focusing on one concept at a time doesn't require us to identify which concept is important"
+        },
+        {
+          "id": "b",
+          "text": "It's not possible to learn one concept without learning the others"
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "pointsPerCorrect": 1.0,
+      "penaltyPerWrong": 0.0,
+      "capAtMax": false
+    },
+    {
+      "id": "q4",
+      "t": 178,
+      "type": "checkbox",
+      "prompt": "I'm listing advantages for 'lecture videos'. What are some advantages?",
+      "points": 1.0,
+      "choices": [
+        {
+          "id": "a",
+          "text": "You can stop the video and repeat things that are not clear"
+        },
+        {
+          "id": "b",
+          "text": "You can call my cell phone to ask questions"
+        },
+        {
+          "id": "c",
+          "text": "You can discuss videos with your colleagues, and bring questions to class."
+        }
+      ],
+      "correct": [
+        "a",
+        "c"
+      ],
+      "pointsPerCorrect": 1.0,
+      "penaltyPerWrong": 0.0,
+      "capAtMax": false
+    },
+    {
+      "id": "q5",
+      "t": 211,
+      "type": "checkbox",
+      "prompt": "Peer Instruction' is when students learn from each other. What do studies show?",
+      "points": 1.0,
+      "choices": [
+        {
+          "id": "a",
+          "text": "Students learn better from other students than from an instructor."
+        },
+        {
+          "id": "b",
+          "text": "The student who is helping the other students also greatly benefits from peer instruction"
+        }
+      ],
+      "correct": [
+        "a",
+        "b"
+      ],
+      "pointsPerCorrect": 1.0,
+      "penaltyPerWrong": 0.0,
+      "capAtMax": false
+    },
+    {
+      "id": "q6",
+      "t": 271,
+      "type": "checkbox",
+      "prompt": "What resources are publicly available for this class?",
+      "points": 1.0,
+      "choices": [
+        {
+          "id": "a",
+          "text": "Lecture videos"
+        },
+        {
+          "id": "b",
+          "text": "Past exams and homework"
+        },
+        {
+          "id": "c",
+          "text": "Solutions"
+        },
+        {
+          "id": "d",
+          "text": "Online Textbook"
+        }
+      ],
+      "correct": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "pointsPerCorrect": 1.0,
+      "penaltyPerWrong": 0.0,
+      "capAtMax": false
+    },
+    {
+      "id": "q7",
+      "t": 304,
+      "type": "mcq",
+      "prompt": "What skill do I imply is the most important?",
+      "points": 1.0,
+      "choices": [
+        {
+          "id": "a",
+          "text": "Working with other people"
+        },
+        {
+          "id": "b",
+          "text": "Finding conceptual underpinnings"
+        }
+      ],
+      "correct": [
+        "a"
+      ]
+    }
+  ],
+  "title": "Different Way to Learn Physics",
+  "category": "Become familiar with our learning model",
+  "group": "Week 01",
+  "videoId": "5tQ1Duebxb8",
+  "allowSeeking": false,
+  "requireContinue": true,
+  "requireWatchToEnd": true,
+  "requireIdentity": true,
+  "feedbackDelaySeconds": 2
+}

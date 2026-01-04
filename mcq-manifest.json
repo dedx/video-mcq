@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "paths": {
+    "project_root": ".",
+    "backend_dir": "backend",
+    "frontend_dir": "frontend",
+    "quizzes_dir": "quizzes",
+    "db_path": "backend/data.sqlite3"
+  },
+  "pages": {
+    "index": "frontend/index.html",
+    "index_simplei": "frontend/index-simple.html",
+    "dashboard": "frontend/dashboard.html"
+  },
+  "static": {
+    "mounts": [
+      { "url_prefix": "/static", "dir": "frontend" }
+    ],
+    "favicon_candidates": ["frontend/favicon.svg", "frontend/favicon.ico"]
+  },
+  "api_contract": {
+    "attempts": "/api/attempts",
+    "submit_attempt": "/api/attempt/{quiz_id}",
+    "quizzes": "/api/quizzes",
+    "quiz": "/api/quiz/{quiz_id}",
+    "delete_attempt": "/api/attempt/{id}",
+    "delete_by_viewer": "/api/attempts/delete_by_viewer",
+    "delete_all": "/api/attempts/delete_all",
+    "export_attempts": "/api/export/attempts",
+    "responses": "/api/responses",
+    "polls_aggregate": "/api/polls/aggregate",
+    "export_poll_fr": "/api/export/poll_fr"
+  },
+  "frontend_ids": {
+    "attemptsTable": true,
+    "attemptQuiz": true,
+    "attemptMode": true,
+    "btnRefreshAttempts": true,
+    "btnDeleteByViewer": true,
+    "btnDeleteAll": true,
+    "btnExportAttempts": true,
+    "respPanel": true,
+    "respQuiz": true,
+    "respType": true,
+    "respAttempt": true,
+    "btnLoadResp": true,
+    "btnExportPollFr": true
+  }
+}

@@ -1,0 +1,97 @@
+:root{--bg:#0b1020;--fg:#e9eef8;--muted:#94a3b8;--card:#121a33;--accent:#5b8cff}
+*{box-sizing:border-box}
+body,html{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:system-ui,Segoe UI,Roboto,sans-serif}
+.container{max-width:960px;margin:24px auto;padding:0 16px}
+#player{aspect-ratio:16/9;background:#111;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55)}
+.hidden{display:none}
+.card{background:var(--card);border:1px solid #223057;border-radius:16px;padding:18px;max-width:720px;width:92%;box-shadow:0 8px 26px rgba(0,0,0,.5)}
+.prompt{font-size:1.1rem;margin-bottom:10px}
+.choices label{display:block;margin:8px 0;padding:10px;border:1px solid #33406a;border-radius:10px;cursor:pointer}
+.choices input{margin-right:10px}
+button{border:0;border-radius:10px;padding:10px 14px;background:var(--accent);color:#fff;font-weight:600;cursor:pointer}
+button:disabled{opacity:.6;cursor:not-allowed}
+.footer{display:flex;align-items:center;gap:12px;margin-top:10px;color:var(--muted)}
+button.secondary { background: transparent; border:1px solid var(--accent); color: var(--accent); margin-left:8px }
+/* Make the button row the topmost thing in the card */
+.card { position: relative; isolation: isolate; }
+.choices { position: relative; z-index: 1; margin-bottom: 12px; }
+.actions { position: relative; z-index: 3; display: flex; gap: 12px; align-items: center; }
+.actions button { position: relative; z-index: 4; }
+
+/* Ensure choice rows don’t float over the buttons */
+.choices label { position: relative; z-index: 1; }
+
+/* Belt-and-suspenders: guarantee buttons always take clicks */
+.actions button, .actions button * { pointer-events: auto !important; }
+/* Ensure action buttons always receive clicks, even if labels overlap */
+.card { position: relative; isolation: isolate; }
+.choices { position: relative; z-index: 1; margin-bottom: 12px; }
+.actions { position: relative; z-index: 3; display: flex; gap: 12px; align-items: center; }
+.choices label { position: relative; z-index: 1; }
+.actions button, .actions button * { pointer-events: auto !important; }
+/* Theater mode: stretch layout and make the player tall */
+/* body.theater main { max-width: none; padding-left: 0; padding-right: 0; } */
+/* body.theater #player { height: 80vh; aspect-ratio: auto; } */
+/* Make the YouTube iframe fill its container */
+#player iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+/* Theater mode: expand but keep centered */
+body.theater main { 
+  max-width: none;         /* let it breathe */
+  padding-left: 0; 
+  padding-right: 0; 
+  margin-left: auto; 
+  margin-right: auto;
+}
+
+/* Default: scale by viewport width up to (almost) full width */
+body.theater #player {
+  width: 96vw;
+  height: calc(96vw * 9 / 16);
+  margin: 0 auto;          /* center horizontally */
+  border-radius: 16px;     /* keep your rounding */
+  overflow: hidden;
+}
+
+/* If the screen is wider than 16:9, switch to scaling by height */
+@media (min-aspect-ratio: 16/9) {
+  body.theater #player {
+    height: 80vh;
+    width: calc(80vh * 16 / 9);
+  }
+}
+
+/* Shared base layout across single + multi */
+main, .container {
+  max-width: 960px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+/* Ensure the player doesn’t exceed the content width unless in theater */
+body:not(.theater) #player {
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Bigger text inside FR/FIB inputs in the overlay */
+#overlay #choices textarea,
+#overlay #choices input[type="text"] {
+  font-size: 18px;      /* ≥16px avoids mobile zoom */
+  line-height: 1.5;
+  padding: 10px 12px;   /* optional: nicer tap target */
+}
+/* mask text inputs like a password field, without triggering password managers */
+.text-secure { -webkit-text-security: disc; text-security: disc; }
+/* Subtle colors; tweak to taste */
+.choice-correct  { border-color:#52c41a !important; background:rgba(82,196,26,.08) !important; }
+.choice-incorrect{ border-color:#ff4d4f !important; background:rgba(255,77,79,.08) !important; }
+.choice-missed   { border-color:#faad14 !important; background:rgba(250,173,20,.08) !important; }
+
+/* Make the ✓ / ✗ chip a bit bolder */
+.choice-chip { font-weight:700; opacity:.95; }

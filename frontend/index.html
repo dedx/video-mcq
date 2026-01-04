@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Interactive Video MCQ — Multi</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <style>
+      :root{--bg:#0b1020;--fg:#e9eef8}
+      body{background:var(--bg);color:var(--fg);font-family:system-ui,Segoe UI,Roboto,sans-serif;margin:0}
+      #player{aspect-ratio:16/9;background:#111;border-radius:16px;overflow:hidden}
+      .overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55)}
+      .hidden{display:none}
+      .card{background:#121a33;border:1px solid #223057;border-radius:16px;padding:18px;max-width:720px;width:92%}
+      .prompt{font-size:1.1rem;margin-bottom:10px}
+      .choices label{display:block;margin:8px 0;padding:10px;border:1px solid #33406a;border-radius:10px}
+      .footer{display:flex;gap:12px;align-items:center;margin-top:10px;opacity:.9}
+      button{border:0;border-radius:10px;padding:10px 14px;background:#5b8cff;color:#fff;font-weight:600;cursor:pointer}
+      .secondary{background:transparent;border:1px solid #5b8cff;color:#5b8cff;margin-left:8px}
+      .toolbar{display:flex;gap:8px;align-items:center;margin:0 0 12px 0;flex-wrap:wrap}
+      select{padding:8px 10px;border-radius:10px;border:1px solid #33406a;background:#0f1630;color:#fff}
+      #status{min-height:1em}
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <h1 id="title">Interactive Video</h1>
+
+      <!-- YouTube player lives here -->
+      <div id="player"></div>
+
+      <!-- Same overlay structure as single-page -->
+      <section id="overlay" class="overlay hidden" aria-live="polite">
+        <div class="card" role="dialog" aria-modal="true">
+          <div id="prompt" class="prompt"></div>
+          <form id="choices" class="choices"></form>
+          <div class="actions">
+            <button id="submit" type="button">Submit</button>
+            <button id="continue" type="button" class="hidden">Continue</button>
+          </div>
+          <div id="feedback" class="feedback" aria-live="polite" style="margin-top:8px"></div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span id="progress"></span>
+        <button id="finish" class="hidden" type="button">Finish & Submit</button>
+        <span id="status"></span>
+      </footer>
+    </main>
+
+    <!-- Make URL attach to quiz id -->
+    <script>
+      const q = new URLSearchParams(window.location.search).get('quiz');
+      if (q) window.QUIZ_ID = q;
+    </script>
+
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <!-- Multi controller only; no player.js here -->
+    <script src="/static/mcq-multi.js"></script>
+    <script src="/static/choices-color.js"></script>
+
+  </body>
+</html>

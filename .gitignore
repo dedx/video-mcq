@@ -1,0 +1,23 @@
+# Local backups
+*.bak
+*~
+.DS_Store
+
+# Large quiz bank lives in the separate quizzes repo
+create_json/pp_quizzes.csv
+pp_quizzes.csv
+
+# Environment files
+.env
+backend/.env
+
+# Python virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python cache
+__pycache__/
+*.pyc
+
