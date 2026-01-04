@@ -12,6 +12,12 @@ That repository’s content is licensed under **CC BY-NC 4.0** (see its `LICENSE
 
 ---
 
+## Quick Start (5 minutes)
+
+See [Instructor Quick Start](QuickStart.md) for instructions to get a server up and running for your class.
+
+---
+
 ## Directory layout (canonical)
 
 ```text
