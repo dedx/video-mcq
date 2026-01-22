@@ -52,7 +52,19 @@ except Exception:
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = PROJECT_ROOT / _M.get("paths", {}).get("frontend_dir", "frontend")
 CONTENT_DIR  = PROJECT_ROOT / _M.get("paths", {}).get("quizzes_dir",  "quizzes")
-DB_PATH      = PROJECT_ROOT / _M.get("paths", {}).get("db_path",      "backend/data.sqlite3")
+#DB_PATH      = PROJECT_ROOT / _M.get("paths", {}).get("db_path",      "backend/data.sqlite3")
+# DB path resolution order:                                                                         
+# 1) DB_PATH env var (systemd recommended)                                                          
+# 2) mcq-manifest.json paths.db_path                                                                
+# 3) fallback: backend/data.sqlite3 (relative to PROJECT_ROOT)                                      
+_db_env = os.getenv("DB_PATH")
+if _db_env:
+    DB_PATH = Path(_db_env).expanduser()
+else:
+    DB_PATH = PROJECT_ROOT / _M.get("paths", {}).get("db_path", "backend/data.sqlite3")
+
+DB_PATH = DB_PATH.resolve()
+
 STATIC_DIRS  = [ PROJECT_ROOT / m.get("dir","frontend") for m in _M.get("static",{}).get("mounts",[]) if m.get("url_prefix")=="/static" ] or [FRONTEND_DIR]
 
 # Load .env/.flaskenv on startup, even if we run via `python app.py`
